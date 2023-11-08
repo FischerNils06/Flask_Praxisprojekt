@@ -1,3 +1,5 @@
+from functools import reduce
+
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -233,6 +235,49 @@ def b3e_endpoint():
 
 
 
+@app.route('/b4g')
+def b4g():
+    # Verwenden von Map, Filter und Reduce
+    numbers = [1, 2, 3, 4, 5]
+    mapped_numbers = list(map(lambda x: x * 2, numbers))
+    filtered_numbers = list(filter(lambda x: x % 2 == 0, numbers))
+    reduced_sum = reduce(lambda x, y: x + y, numbers)
+
+    return jsonify({
+        "mapped_numbers": mapped_numbers,
+        "filtered_numbers": filtered_numbers,
+        "reduced_sum": reduced_sum
+    })
+
+
+@app.route('/b4f')
+def b4f():
+    # Kombinierte Verwendung von Map, Filter und Reduce
+    # Berechnung der Summe aller geraden Zahlen von 1 bis n
+    data = [1, 2, 3, 4, 5]
+    result = reduce(lambda x, y: x + y, map(lambda x: x * 2, filter(lambda x: x % 2 == 0, data)))
+    return jsonify({
+        "result": result
+    })
+
+
+
+@app.route('/b4e')
+def b4e():
+    # Verwendung von Map, Filter und Reduce für komplexe Datenverarbeitung
+    # Berechnung der Summe aller Alterswerte von Personen, die älter als 30 sind
+    data = [
+        {"name": "Alice", "age": 30},
+        {"name": "Bob", "age": 25},
+        {"name": "Charlie", "age": 35}
+    ]
+    total_age = reduce(lambda x, y: x + y, map(lambda x: x["age"], filter(lambda x: x["age"] >= 30, data)))
+
+    return jsonify({
+        "total_age": total_age
+    })
+
 
 if __name__ == '__main__':
     app.run()
+
