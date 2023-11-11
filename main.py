@@ -4,20 +4,45 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def start_page():
-    return 'Welcome to the start page!'
+    return 'Welcome to the start page!<br>' \
+           '<br>' \
+           'Please visit the following endpoints:<br>' \
+           '/a1g   (pure vs. procedural)<br>' \
+           '/a1f   (immutable values)<br>' \
+           '/a1e   (OO vs. functional vs. procedural)<br>' \
+           '/b1g   (bubble sort)<br>' \
+           '/b1f   (lambda functions)<br>' \
+           '/b1e   (functions)<br>' \
+           '/b2g   (functions as variables)<br>' \
+           '/b2f   (functions as arguments)<br>' \
+           '/b2e   (closure functions)<br>' \
+           '/b3g   (lambda functions)<br>' \
+           '/b3f   (lambda functions)<br>' \
+           '/b3e   (lambda functions)<br>' \
+           '/b4g   (map, filter, reduce)<br>' \
+           '/b4f   (map, filter, reduce)<br>' \
+           '/b4e   (map, filter, reduce)<br>' \
+           '/c1g   (code smell: long parameter list)<br>' \
+           '/c1f   (code smell: meaningless names)<br>' \
+           '/c1e   (code smell: side effects)<br>'
+
 
 # Eine pure function, die das gleiche Ergebnis für die gleichen Eingaben liefert
 def pure_add_numbers(x, y):
     return x + y
 
+
 # Eine Prozedur, die eine globale Variable ändert
 total = 0
+
 
 def procedural_add_numbers(x, y):
     global total
     total += x + y
+
 
 @app.route('/a1g')
 def a1g_endpoint():
@@ -25,7 +50,9 @@ def a1g_endpoint():
     procedural_add_numbers(3, 4)
     return f'Result of pure_add_numbers: {result_pure}, Total after procedural_add_numbers: {total}'
 
+
 immutable_values = (1, 2, 3, 4, 5)
+
 
 @app.route('/a1f')
 def a1f_endpoint():
@@ -37,6 +64,7 @@ def a1f_endpoint():
 
     return jsonify({"immutable_values": immutable_values})
 
+
 # Objektorientierte Klasse
 class CalculatorOO:
     def __init__(self, x):
@@ -45,18 +73,23 @@ class CalculatorOO:
     def add(self, y):
         return self.x + y
 
+
 # Funktionale Funktion
 def add_functional(x, y):
     return x + y
 
+
 total = 0
+
 
 def add_to_total(x):
     global total
     total += x
 
+
 add_to_total(5)
 add_to_total(3)
+
 
 @app.route('/a1e')
 def a1e_calculator_endpoint():
@@ -77,6 +110,7 @@ def a1e_calculator_endpoint():
     }
 
     return jsonify(comparison)
+
 
 @app.route('/b1g')
 def b1g_endpoint():
@@ -102,6 +136,7 @@ def b1g_endpoint():
     print(sorted_list)
 
     return jsonify({"unsorted_list": unsorted_list, "sorted_list": sorted_list})
+
 
 @app.route('/b1f')
 def b1f_endpoint():
@@ -144,6 +179,7 @@ def b1e_endpoint():
 
 def greet(name):
     return f"Hello, {name}!"
+
 
 # Funktion in einer Variable speichern
 my_function = greet
@@ -191,6 +227,7 @@ def b2e_endpoint():
     def create_multiplier(factor):
         def multiplier(x):
             return x * factor
+
         return multiplier
 
     # Closure-Funktionen erstellen
@@ -204,8 +241,8 @@ def b2e_endpoint():
     return jsonify({"result_double": result_double, "result_triple": result_triple})
 
 
+square = lambda x: x ** 2
 
-square = lambda x: x**2
 
 @app.route('/b3g')
 def b3g_endpoint():
@@ -215,6 +252,7 @@ def b3g_endpoint():
 
 
 multiply = lambda x, y: x * y
+
 
 @app.route('/b3f')
 def b3f_endpoint():
@@ -226,13 +264,12 @@ def b3f_endpoint():
 
 sort_by_length = lambda x: sorted(x, key=lambda item: len(item))
 
+
 @app.route('/b3e')
 def b3e_endpoint():
     strings = ["Apfel", "Banane", "Kirsche", "Erdbeere", "Orange"]
     sorted_strings = sort_by_length(strings)
     return f'Sortierte Liste: {sorted_strings}'
-
-
 
 
 @app.route('/b4g')
@@ -261,7 +298,6 @@ def b4f():
     })
 
 
-
 @app.route('/b4e')
 def b4e():
     # Verwendung von Map, Filter und Reduce für komplexe Datenverarbeitung
@@ -278,6 +314,90 @@ def b4e():
     })
 
 
+@app.route('/c1g')
+def c1g_endpoint():
+    return 'Welcome to the start page of C1G!<br>' \
+           '<br>' \
+           'Please visit the following endpoints:<br>' \
+           '/c1g/original' \
+           '<br>/c1g/refactored'
+
+
+# Ursprünglicher, schlecht lesbarer Code
+@app.route('/c1g/original')
+def c1g_original():
+    data = {'name': 'John', 'age': 30, 'city': 'New York'}
+    return jsonify(data)
+
+
+# Refaktorierter Code, der lesbarer ist
+@app.route('/c1g/refactored')
+def c1g_refactored():
+    person = {
+        'name': 'John',
+        'age': 30,
+        'city': 'New York'
+    }
+    return jsonify(person)
+
+
+@app.route('/c1f')
+def c1f_endpoint():
+    return 'Welcome to the start page of C1F!<br>' \
+           '<br>' \
+           'Please visit the following endpoints:<br>' \
+           '/c1f/original<br>' \
+           '/c1f/refactored'
+
+
+@app.route('/c1f/original')
+def c1f_original():
+    data = {'n': 'John', 'a': 30, 'c': 'New York'}
+    result = {'name': data['n'], 'age': data['a'], 'city': data['c']}
+    return jsonify(result)
+
+
+# Refaktorierter Code, der lesbarer und verständlicher ist
+@app.route('/c1f/refactored')
+def c1f_refactored():
+    data = {'n': 'John', 'a': 30, 'c': 'New York'}
+    person = {
+        'name': data['n'],
+        'age': data['a'],
+        'city': data['c']
+    }
+    return jsonify(person)
+
+
+@app.route('/c1e')
+def c1e_endpoint():
+    return 'Welcome to the start page of C1E!<br>' \
+           '<br>' \
+           'Please visit the following endpoints:<br>' \
+           '/c1e/original<br>' \
+           '/c1e/refactored'
+
+
+data_c1e = {'counter': 0}
+
+
+# Ursprünglicher Code, der einen unerwünschten Nebeneffekt hat
+@app.route('/c1e/original')
+def c1e_original():
+    data_c1e['counter'] += 1
+    return jsonify({'counter': data_c1e['counter']})
+
+
+# Refaktorierter Code, der denselben unerwünschten Nebeneffekt behebt
+@app.route('/c1e/refactored')
+def c1e_refactored():
+    local_data = data_c1e.copy()  # Kopie der Daten, um Nebeneffekte zu vermeiden
+    local_data['counter'] += 1
+    return jsonify({'counter': local_data['counter']})
+
+
+
+
+
 if __name__ == '__main__':
     app.run()
-
